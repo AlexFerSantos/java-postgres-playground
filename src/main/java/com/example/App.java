@@ -1,99 +1,40 @@
 package com.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class App {
-    //Testando Versionamento
-    private static final String PASSWORD = "";
-    private static final String USERNAME = "gitpod";
-    private static final String JDBC_URL = "jdbc:postgresql://localhost/postgres";
+    public static void main (String[] args){
 
-    public static void main(String[] args) {
-        new App();
-    }
+        Abastecimento abastecimento = new Abastecimento();
+        abastecimento.setKmNoAbastecimento(100500);
+        abastecimento.setPrice(5.79);
+        abastecimento.setLiters(40.00);
 
-    public App(){
-        try(var conn = getConnection()){
-            carregarDriverJDBC();
-            listarEstados(conn);
-            localizarEstado(conn, "PR");
-            listarDadosTabela(conn, "produto");
-        } catch (SQLException e) {
-            System.err.println("Não foi possível conectar ao banco de dados: " + e.getMessage());
-        }        
-    }
+        Veiculo corolla = new Veiculo();
+        corolla.setConsumo(abastecimento);       
 
-    private void listarDadosTabela(Connection conn, String tabela) {
-        var sql = "select * from " + tabela;
-        //System.out.println(sql);
-        try {
-            var statement = conn.createStatement();
-            var result = statement.executeQuery(sql);
-
-            var metadata = result.getMetaData();
-            int cols = metadata.getColumnCount();
-
-            for (int i = 1; i <= cols; i++) {
-                System.out.printf("%-25s | ", metadata.getColumnName(i));
-            }
-            System.out.println();
-
-            while(result.next()){
-                for (int i = 1; i <= cols; i++) {
-                    System.out.printf("%-25s | ", result.getString(i));
-                }
-                System.out.println();
-            }
-        } catch (SQLException e) {
-            System.err.println("Erro na execução da consulta: " + e.getMessage());
-        }
+        System.out.println("Km do abastecimento: "+ abastecimento.getKmNoAbastecimento());
+        System.out.println("Km Atual: "+ corolla.getkmAtual());
+        System.out.printf("Preço: %.2f \n", abastecimento.getPrice());
+        System.out.printf("Litros: %.2f \n", abastecimento.getLiters());
+        System.out.printf("Valor Total: R$ %.2f \n", abastecimento.CalculateValueAmountPaid());
+        System.out.printf("Consumo: %.2f \n", corolla.getConsumo());
         
-    }
+        corolla.setKmAtual(abastecimento.getKmNoAbastecimento());
 
-    private void localizarEstado(Connection conn, String uf) {
-        try{
-            //var sql = "select * from estado where uf = '" + uf + "'"; //suscetível a SQL Injection
-            var sql = "select * from estado where uf = ?";
-            var statement = conn.prepareStatement(sql);
-            //System.out.println(sql);
-            statement.setString(1, uf);
-            var result = statement.executeQuery();
-            if(result.next()){
-                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
-            }
-            System.out.println();
-        } catch(SQLException e){
-            System.err.println("Erro ao executar consulta SQL: " + e.getMessage());
-        }
-        
-    }
+        Abastecimento abastecimento2 = new Abastecimento();
+        abastecimento2.setKmNoAbastecimento(100800);
+        abastecimento2.setPrice(5.79);
+        abastecimento2.setLiters(40.00);
 
-    private void listarEstados(Connection conn) {
-        try{
-            System.out.println("Conexão com o banco realizada com sucesso.");
+        corolla.setConsumo(abastecimento2);       
 
-            var statement = conn.createStatement();
-            var result = statement.executeQuery("select * from estado");
-            while(result.next()){
-                System.out.printf("Id: %d Nome: %s UF: %s\n", result.getInt("id"), result.getString("nome"), result.getString("uf"));
-            }
-            System.out.println();
-        } catch (SQLException e) {
-            System.err.println("Não foi possível executar a consulta ao banco: " + e.getMessage());
-        }
-    }
+        System.out.println("Km do abastecimento 2: "+ abastecimento2.getKmNoAbastecimento());
+        System.out.println("Km Atual: "+ corolla.getkmAtual());
+        System.out.printf("Preço: %.2f \n", abastecimento2.getPrice());
+        System.out.printf("Litros: %.2f \n", abastecimento2.getLiters());
+        System.out.printf("Valor Total: R$ %.2f \n", abastecimento2.CalculateValueAmountPaid());
+        System.out.printf("Consumo: %.2f \n", corolla.getConsumo());
 
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
-    }
+        corolla.setKmAtual(abastecimento2.getKmNoAbastecimento());
 
-    private void carregarDriverJDBC() {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            System.err.println("Não foi possível carregar a biblioteca para acesso ao banco de dados: " + e.getMessage());
-        }
     }
 }

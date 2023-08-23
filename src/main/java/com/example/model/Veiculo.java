@@ -1,4 +1,4 @@
-package com.example;
+package com.example.model;
 
 public class Veiculo {
     private int kmAtual = 100000;

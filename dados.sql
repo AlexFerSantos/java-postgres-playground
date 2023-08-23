@@ -3,6 +3,21 @@
 -- Área por estado: https://pt.wikipedia.org/wiki/Lista_de_unidades_federativas_do_Brasil_por_área
 -- População por estado (prévio censo 2022): https://pt.wikipedia.org/wiki/Lista_de_unidades_federativas_do_Brasil_por_população
 
+drop table if exists abastecimentos
+
+create table abastecimentos (
+    kmNoAbastecimento int PRIMARY KEY not null,
+    preco decimal not null,
+    litros decimal not null
+);
+
+INSERT INTO abastecimentos (kmNoabastecimento, preco, litros) VALUES
+    (189524, 45.00, 6.699),
+    (189942, 14.93, 6.699),
+    (190046, 44.60, 6.699),
+    (190447, 44.68, 6.670);
+
+
 drop table if exists item_venda;
 drop table if exists venda;
 

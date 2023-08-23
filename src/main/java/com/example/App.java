@@ -1,5 +1,8 @@
 package com.example;
 
+import com.example.model.Abastecimento;
+import com.example.model.Veiculo;
+
 public class App {
     public static void main (String[] args){
 

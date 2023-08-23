@@ -1,5 +1,4 @@
-package com.example;
-
+package com.example.model;
 
 public class Abastecimento {
     private int kmNoAbastecimento;

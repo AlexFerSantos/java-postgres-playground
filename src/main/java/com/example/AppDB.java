@@ -1,6 +1,5 @@
 package com.example;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import com.example.dao.ConnectionManager;
